@@ -1,0 +1,5 @@
+<tlib version="1">
+    <commands>
+        <command name="prank-prompt" source="prank-prompt.sh"/>
+    </commands>
+</tlib>
