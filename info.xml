@@ -1,5 +1,6 @@
 <tlib version="1">
     <commands>
         <command name="prank-prompt" source="prank-prompt.sh"/>
+        <command name="reset-promt" source="reset-prompt.sh"/>
     </commands>
 </tlib>
