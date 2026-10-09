@@ -1,21 +1,31 @@
 #!/bin/sh
-# Removes the prompt lines added by set-prompt.sh.
-# Usage: sh reset-prompt.sh
+# Resets the prompt to the current username.
+# Usage: . ./reset-prompt.sh
 
 MARK="# prompt-joke"
+RESET_MARK="# prompt-reset"
 
 clean() {
   file="$1"
-  if [ -f "$file" ] && grep -q "$MARK" "$file"; then
-    # delete any line tagged with the marker
-    sed -i.bak "/$MARK/d" "$file"
-    echo "Removed from $file (backup at $file.bak)"
+  prompt="$2"
+  touch "$file"
+  if grep -q -e "$MARK" -e "$RESET_MARK" "$file"; then
+    sed -i.bak "/$MARK/d; /$RESET_MARK/d" "$file"
+    echo "Removed old prompt settings from $file (backup at $file.bak)"
   else
-    echo "Nothing to remove in $file"
+    echo "No old prompt settings in $file"
   fi
+
+  printf '\n%s %s\n' "$prompt" "$RESET_MARK" >> "$file"
 }
 
-clean "$HOME/.zshrc"
-clean "$HOME/.bashrc"
+clean "$HOME/.zshrc" "PROMPT='%n@%m %1~ %# '"
+clean "$HOME/.bashrc" "PS1='\\u@\\h \\W \\\$ '"
 
-echo "Open a new terminal window to see the default prompt return."
+if [ -n "${ZSH_VERSION:-}" ]; then
+  PROMPT='%n@%m %1~ %# '
+elif [ -n "${BASH_VERSION:-}" ]; then
+  PS1='\u@\h \W \$ '
+fi
+
+echo "Prompt settings saved; sourcing this script updates the current shell immediately."

@@ -1,6 +1,6 @@
 #!/bin/sh
 # Adds a custom prompt to ~/.zshrc and ~/.bashrc.
-# Usage: sh set-prompt.sh [name]   (default name: hacker)
+# Usage: . ./prank-prompt.sh [name]   (default name: hacker)
 # Undo:  sed -i '' '/# prompt-joke/d' ~/.zshrc ~/.bashrc
 
 NAME="${1:-hacker}"
@@ -19,5 +19,7 @@ add() {
 
 add "$HOME/.zshrc"  "PROMPT='$NAME@%m %1~ %# '"
 add "$HOME/.bashrc" "PS1='$NAME@\\h \\W \\\$ '"
+PROMPT="$NAME@%m %1~ %# "
+PS1="$NAME@\\h \\W \\\$ "
 
-echo "Open a new terminal window to see the result."
+echo "Prompt settings saved; sourcing this script updates the current shell immediately."
